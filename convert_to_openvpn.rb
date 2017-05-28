@@ -32,13 +32,8 @@ class IPRange
     return true
   end
 
-  def split_subnet
-    """Turns CIDR to subnet form; 1.2.3.4/32 -> 1.2.3.4 255.255.255.255."""
-    # @range.inspect.split(/[\/:>]/).slice(2,4).join(' ')
-    "#{@range.get_ip} #{@range.get_subnet}"
-  end
-
   def openvpn_format
+    """Returns in format: route 155.133.252.0 255.255.255.0 net_gateway"""
     "route #{@range.get_ip} #{@range.get_subnet} net_gateway"
   end
 
@@ -49,7 +44,7 @@ Dir.foreach('games') do |list|
   next if list =~ /^\./
   f = open("games/#{list}")
 
-  puts "Reading from file #{list}"
+  puts "\# IPs from #{list}"
 
   f.readlines.each do |line|
     ip = IPRange.new(line.chomp)

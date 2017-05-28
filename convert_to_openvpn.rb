@@ -38,6 +38,10 @@ class IPRange
     "#{@range.get_ip} #{@range.get_subnet}"
   end
 
+  def openvpn_format
+    "route #{@range.get_ip} #{@range.get_subnet} net_gateway"
+  end
+
 end
 
 # Let's go!
@@ -50,7 +54,7 @@ Dir.foreach('games') do |list|
   f.readlines.each do |line|
     ip = IPRange.new(line.chomp)
     next unless ip.is_valid_ip_range?  # Skip anything that's not an IP range
-    puts "#{ip.split_subnet}"
+    puts "#{ip.openvpn_format}"
   end
 
   f.close

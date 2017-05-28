@@ -37,6 +37,11 @@ class IPRange
     "route #{@range.get_ip} #{@range.get_subnet} net_gateway"
   end
 
+  def openwrt_format
+    """For on OpenWRT's /etc/config/openvpn."""
+    "list route '#{@range.get_ip} #{@range.get_subnet} net_gateway'"
+  end
+
 end
 
 # Let's go!
@@ -50,6 +55,7 @@ Dir.foreach('games') do |list|
     ip = IPRange.new(line.chomp)
     next unless ip.is_valid_ip_range?  # Skip anything that's not an IP range
     puts "#{ip.openvpn_format}"
+    #puts "#{ip.openwrt_format}"
   end
 
   f.close
